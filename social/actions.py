@@ -1,4 +1,5 @@
 from social.p3 import quote
+from social.exceptions import AuthForbidden
 from social.utils import sanitize_redirect, user_is_authenticated, \
                          user_is_active, partial_pipeline_data, setting_url
 
@@ -40,7 +41,10 @@ def do_complete(backend, login, user=None, redirect_name='next',
         xargs, xkwargs = partial
         user = backend.continue_pipeline(*xargs, **xkwargs)
     else:
-        user = backend.complete(user=user, *args, **kwargs)
+        try:
+            user = backend.complete(user=user, *args, **kwargs)
+        except AuthForbidden:
+            user = None
 
     # pop redirect value before the session is trashed on login(), but after
     # the pipeline so that the pipeline can change the redirect if needed
