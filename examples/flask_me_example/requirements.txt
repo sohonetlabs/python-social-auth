@@ -5,3 +5,4 @@ Werkzeug
 Jinja2
 mongoengine==0.8.4
 python-social-auth
+dnspython>=2.6.0rc1 # not directly required, pinned by Snyk to avoid a vulnerability
